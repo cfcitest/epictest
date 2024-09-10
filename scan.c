@@ -34,12 +34,14 @@ int main(void) {
         if (ret == 0 || (errno == EINPROGRESS)) {
             fd_set set;
             struct timeval timeout;
-
+            printf("Sending to %ud\n", port);
+            const char* httpGet = "GET /\n\n";
+            write(sock, httpGet, strlen(httpGet));
             FD_ZERO(&set); /* clear the set */
             FD_SET(sock, &set); /* add our file descriptor to the set */
 
             timeout.tv_sec = 0;
-            timeout.tv_usec = 500000; // 0.5 seconds
+            timeout.tv_usec = 50000; // 0.05 seconds
 
             ret = select(sock + 1, &set, NULL, NULL, &timeout);
             if (ret > 0) {
